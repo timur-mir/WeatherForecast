@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Прогноз погоды</string>
+    <string name="temp">Температура воздуха в городе:</string>
+    <string name="get">Get</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/searchFragment2">
+
+    <fragment
+        android:id="@+id/cityFragment2"
+        android:name="ru.presentationpatterns.weatherforecast.presentation.cityscope.CityFragment"
+        android:label="CityFragment" >
+        <action
+            android:id="@+id/action_cityFragment2_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_cityFragment2_to_searchFragment2"
+            app:destination="@id/searchFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="ru.presentationpatterns.weatherforecast.presentation.detailcityscope.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="city_name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailFragment_to_searchFragment2"
+            app:destination="@id/searchFragment2" />
+        <action
+            android:id="@+id/action_detailFragment_to_cityFragment2"
+            app:destination="@id/cityFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment2"
+        android:name="ru.presentationpatterns.weatherforecast.presentation.searchscope.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment2_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+</navigation>
