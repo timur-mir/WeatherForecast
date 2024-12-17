@@ -99,8 +99,16 @@ class DetailFragment : Fragment() {
         audioFon?.isLooping = true
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onPause() {
+        super.onPause()
+        audioFon?.apply {
+            pause()
+            reset()
+            release()
+        }.also { audioFon = null }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
         binding.cityDetail.adapter = null
         _binding = null
         audioFon?.apply {
