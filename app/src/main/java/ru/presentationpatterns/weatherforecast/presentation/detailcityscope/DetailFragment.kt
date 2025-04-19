@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -79,7 +80,14 @@ class DetailFragment : Fragment() {
                 val lastWeatherInfo =
                     MainActivity.Panel.cityWeatherInfo[(MainActivity.Panel.cityWeatherInfo.size) - 1]
                 binding.cityCurrentTemp.text =
-                    "сегодня ${lastWeatherInfo.currentTempC}°С  завтра ${lastWeatherInfo.tomorrowTempC}°С "
+                    "сейчас ${lastWeatherInfo.currentTempC}°С  завтра ${lastWeatherInfo.tomorrowTempC}°С "
+                if(lastWeatherInfo.currentTempC>5){
+//                    binding.star4.background=ResourcesCompat.getDrawable(getResources(), R.drawable.sunrise_desert, null)
+                    binding.star4.setImageResource(R.drawable.sunrise_desert)
+                }
+                else {
+                    binding.star4.setImageResource(R.drawable.winter)
+                }
             } else {
                 binding.cityCurrentTemp.text ="Режим просмотра температур "
             }

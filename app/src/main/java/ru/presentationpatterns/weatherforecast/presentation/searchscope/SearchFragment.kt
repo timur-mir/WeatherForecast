@@ -119,6 +119,7 @@ class SearchFragment : Fragment() {
     fun init(){
         MainActivity.Panel.readBackupFlag=false
         townSearchList.clear()
+        townSearchList.add("Наманган")
         townSearchList.add("Москва")
         townSearchList.add("Санкт-Петербург")
         townSearchList.add("Норильск")
