@@ -81,6 +81,7 @@ class SearchFragment : Fragment() {
 
     }
     fun searchTown(cityName:String){
+        MainActivity.Panel.readBackupFlag=false
         viewLifecycleOwner.lifecycleScope.launch {
             searchViewModel.getCityWeatherParam(cityName) { state ->
                 if (state != null) {

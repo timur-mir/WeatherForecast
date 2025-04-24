@@ -1,6 +1,12 @@
 package ru.presentationpatterns.weatherforecast
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.presentationpatterns.weatherforecast.databinding.ActivityMainBinding
 import ru.presentationpatterns.weatherforecast.domain.CityWeatherInfo
+import ru.presentationpatterns.weatherforecast.presentation.MusicService
 import ru.presentationpatterns.weatherforecast.presentation.WeatherViewModel
 
 
@@ -29,15 +36,16 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = binding.panelNavigationMain
         val navController = findNavController(R.id.fragCont)
         bottomNavigationView.setupWithNavController(navController)
-        Panel.panelNav=bottomNavigationView
+        Panel.panelNav = bottomNavigationView
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
 
-                R.id.searchFragment-> {
-                  navController.navigate(R.id.searchFragment2)
+                R.id.searchFragment -> {
+                    navController.navigate(R.id.searchFragment2)
                 }
+
                 R.id.cityFragment -> {
-                  navController.navigate(R.id.cityFragment2)
+                    navController.navigate(R.id.cityFragment2)
                 }
             }
             true
@@ -45,11 +53,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    object Panel{
-        var normalFoundPlaceState=false
-        var readBackupFlag=false
+
+    object Panel {
+        var normalFoundPlaceState = false
+        var readBackupFlag = false
         lateinit var panelNav: BottomNavigationView
-        var cityWeatherInfo:List<CityWeatherInfo> = emptyList<CityWeatherInfo>()
+        var cityWeatherInfo: List<CityWeatherInfo> = emptyList<CityWeatherInfo>()
     }
 }
 
