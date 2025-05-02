@@ -86,7 +86,7 @@ class MusicService : Service() {
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Погода в городе")
-            .setContentText("${town.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }}, ${state}${currentTempEx}° С ")
+            .setContentText("${town.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} ${state}${currentTempEx}° С ")
             .setSmallIcon(R.drawable.city)
             .setAutoCancel(true)
             .build()

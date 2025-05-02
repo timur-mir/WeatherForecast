@@ -1,6 +1,7 @@
 package ru.presentationpatterns.weatherforecast.presentation.detailcityscope
 
 import android.annotation.SuppressLint
+import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -32,7 +33,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.presentationpatterns.weatherforecast.App
 import ru.presentationpatterns.weatherforecast.MainActivity
+import ru.presentationpatterns.weatherforecast.MainActivity.Panel.searchPlaсe
+import ru.presentationpatterns.weatherforecast.MainActivity.Panel.temperature
 import ru.presentationpatterns.weatherforecast.R
+import ru.presentationpatterns.weatherforecast.WeatherWidget
 import ru.presentationpatterns.weatherforecast.databinding.DetailFragmentBinding
 import ru.presentationpatterns.weatherforecast.presentation.MusicService
 
@@ -43,7 +47,6 @@ class DetailFragment : Fragment() {
     var detailAdapter: DetailAdapter = DetailAdapter()
     var towm:String=""
     var temp=15.00
-    var stateLookingHistory=false
     private var musicService: MusicService? = null
     private var isBound = false
     private val detailViewModel by viewModels<DetailViewModel>
@@ -100,14 +103,24 @@ class DetailFragment : Fragment() {
             }
         }
         binding.cityTitle.text = arg.cityName
+        searchPlaсe=arg.cityName
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             delay(1000)
             if (MainActivity.Panel.cityWeatherInfo.isNotEmpty() && !MainActivity.Panel.readBackupFlag) {
                 val lastWeatherInfo =
                     MainActivity.Panel.cityWeatherInfo[(MainActivity.Panel.cityWeatherInfo.size) - 1]
                 temp=lastWeatherInfo.currentTempC
+                temperature=temp.toInt()
+
                 binding.cityCurrentTemp.text =
                     "сейчас ${lastWeatherInfo.currentTempC}°С  завтра ${lastWeatherInfo.tomorrowTempC}°С "
+                //////////////////////
+                val man = AppWidgetManager.getInstance(requireContext())
+                val ids = man.getAppWidgetIds(ComponentName(requireActivity(), WeatherWidget::class.java))
+                val updateIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
+                updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+                requireActivity().sendBroadcast(updateIntent)
+                //////////////////////
                 if (lastWeatherInfo.currentTempC > 5) {
 //                    binding.star4.background=ResourcesCompat.getDrawable(getResources(), R.drawable.sunrise_desert, null)
                     binding.star4.setImageResource(R.drawable.sunrise_desert)
@@ -125,7 +138,6 @@ class DetailFragment : Fragment() {
         }
 
     }
-
     override fun onStart() {
         super.onStart()
         val intent = Intent(requireContext(), MusicService::class.java)
@@ -136,7 +148,7 @@ class DetailFragment : Fragment() {
         super.onResume()
         Handler().postDelayed({
             musicService?.startMusic(towm,temp,MainActivity.Panel.readBackupFlag)
-        }, 1228)
+        }, 1333)
     }
 
     override fun onPause() {
