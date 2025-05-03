@@ -16,22 +16,15 @@ class WeatherWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-//        // There may be multiple widgets active, so update all of them
-//        for (appWidgetId in appWidgetIds) {
-//            updateAppWidget(context, appWidgetManager, appWidgetId)
-//        }
-
         val intent = Intent(context.applicationContext, WidgetUpdateService::class.java)
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
         context.startService(intent)
     }
 
     override fun onEnabled(context: Context) {
-        // Enter relevant functionality for when the first widget is created
     }
 
     override fun onDisabled(context: Context) {
-        // Enter relevant functionality for when the last widget is disabled
     }
 
     companion object {
@@ -44,7 +37,6 @@ class WeatherWidget : AppWidgetProvider() {
             currentTown: String
         ) {
             var widgetText = ""
-
             if (searchPlaсe.isEmpty()) {
                 if (temp == 1 || temp == 21 || temp == 31 || temp == 41 || temp == 51 || temp == 61 || temp == 71 || temp == 81) {
                     widgetText =
@@ -62,16 +54,16 @@ class WeatherWidget : AppWidgetProvider() {
             } else {
                 if (temp == 1 || temp == 21 || temp == 31 || temp == 41 || temp == 51 || temp == 61 || temp == 71 || temp == 81) {
                     widgetText =
-                        "$searchPlaсe, ${context.getString(R.string.appwidget_text)}  $temp градус"
+                        "$searchPlaсe, ${context.getString(R.string.appwidget_text_after_search)}  $temp градус"
                 } else if (temp == 2 || temp == 3 || temp == 4 || temp == 22 || temp == 23 || temp == 24 || temp == 32 || temp == 33 || temp == 34
                     || temp == 42 || temp == 43 || temp == 44 || temp == 52 || temp == 53 || temp == 54 || temp == 62 || temp == 63 || temp == 64
                     || temp == 72 || temp == 73 || temp == 74
                 ) {
                     widgetText =
-                        "$searchPlaсe, ${context.getString(R.string.appwidget_text)}  $temp градуса"
+                        "$searchPlaсe, ${context.getString(R.string.appwidget_text_after_search)}  $temp градуса"
                 } else {
                     widgetText =
-                        "$searchPlaсe, ${context.getString(R.string.appwidget_text)}  $temp градусов"
+                        "$searchPlaсe, ${context.getString(R.string.appwidget_text_after_search)}  $temp градусов"
                 }
             }
             val views = RemoteViews(context.packageName, R.layout.weather_widget)
