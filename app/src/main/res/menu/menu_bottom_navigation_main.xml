@@ -3,11 +3,10 @@
 
     <item
         android:id="@+id/searchFragment"
-        android:title="Поиск"
+        android:title="Запрос погоды"
         android:icon="@drawable/search" />
     <item
         android:id="@+id/cityFragment"
-        android:title="Города"
+        android:title="История температур"
         android:icon="@drawable/city"/>
-
 </menu>

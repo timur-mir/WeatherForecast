@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="pink">#FB8383</color>
+    <color name="pink">#80FB8383</color>
     <color name="red1">#8F0634</color>
     <color name="blue">#A92C30B1</color>
     <color name="green">#A9008577</color>
@@ -12,4 +12,5 @@
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
+    <color name="textColorSearchView">#fff</color>
 </resources>

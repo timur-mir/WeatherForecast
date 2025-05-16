@@ -3,13 +3,18 @@ package ru.presentationpatterns.weatherforecast
 import android.Manifest
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
+import android.content.BroadcastReceiver
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Criteria
 import android.location.Geocoder
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,16 +23,19 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.get
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 import ru.presentationpatterns.weatherforecast.MainActivity.Panel.currentPlace
+import ru.presentationpatterns.weatherforecast.MainActivity.Panel.netState
 import ru.presentationpatterns.weatherforecast.MainActivity.Panel.temperature
 import ru.presentationpatterns.weatherforecast.databinding.ActivityMainBinding
 import ru.presentationpatterns.weatherforecast.domain.CityWeatherInfo
 import java.net.URL
-
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -36,16 +44,33 @@ class MainActivity : AppCompatActivity() {
     lateinit var geocoder: Geocoder
     private var gps_enabled = false
     private var network_enabled = false
+    private val networkReceiver by lazy { NetworkReceiver() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val filter = IntentFilter().apply { addAction(ConnectivityManager.CONNECTIVITY_ACTION) }
+        registerReceiver(
+            networkReceiver,
+            filter
+        )
         geocoder = Geocoder(this)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val bottomNavigationView = binding.panelNavigationMain
         val navController = findNavController(R.id.fragCont)
+//        val builder = AppBarConfiguration.Builder(navController.graph)
+//        val appBarConfiguration = builder.build()
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.searchFragment2,
+                R.id.cityFragment2
+            )
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
         Panel.panelNav = bottomNavigationView
+        refreshWeatherInfo()
+
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
 
@@ -59,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        refreshWeatherInfo()
+
 
     }
 
@@ -143,13 +168,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshWeatherInfo() {
+        if (!netState) {
+            val snackbar =
+                Snackbar.make(binding.root, "Сеть недоступна", Snackbar.LENGTH_INDEFINITE)
+            snackbar.setActionTextColor(Color.WHITE)
+                .setBackgroundTint((Color.BLUE))
+                .setAction("Понятно") {
+                    snackbar.dismiss()
+                }
+                .show()
+        }
         getLocation()
         val man = AppWidgetManager.getInstance(this)
         val ids = man.getAppWidgetIds(ComponentName(this, WeatherWidget::class.java))
         val updateIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
         updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
         sendBroadcast(updateIntent)
-
     }
 
     private fun updateWidget() {
@@ -206,11 +240,42 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
-    companion object {
-        private const val PERMISSION_REQUEST_CODE = 4444
+    override fun onPause() {
+        super.onPause()
+        try {
+            unregisterReceiver(networkReceiver)
+        } catch (e: IllegalArgumentException) {
+            Log.e("Broadcast", "Приёмник проверки состоянии сети не зарегистрирован", e)
+            Toast.makeText(
+                this,
+                "Приёмник проверки состоянии сети не зарегистрирован",
+                Toast.LENGTH_SHORT
+            )
+                .show();
+        }
     }
 
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 4444
+
+        class NetworkReceiver : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.action == ConnectivityManager.CONNECTIVITY_ACTION) {
+                    val connectivity =
+                        intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+                    if (connectivity) {
+                        netState = false
+
+                    }
+                }
+
+            }
+        }
+    }
+
+
     object Panel {
+        var netState = true
         var currentPlace = ""
         var searchPlaсe = ""
         var temperature = 10

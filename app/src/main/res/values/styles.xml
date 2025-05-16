@@ -9,4 +9,14 @@
         <item name="android:background">#E409CF57</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <!-- Text Size -->
+        <item name="android:textSize">@dimen/textSizePrimary</item>
+        <!-- Query Text Color -->
+        <item name="android:textColorPrimary">@color/textColorSearchView</item>
+        <!-- Hint Color -->
+        <item name="android:textColorHint">@color/textColorSearchView</item>
+        <!-- Icon Color -->
+        <item name="android:tint">@color/textColorSearchView</item>
+    </style>
 </resources>

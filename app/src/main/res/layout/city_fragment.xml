@@ -16,13 +16,30 @@
     android:layout_width="match_parent"
     android:layout_height="520dp"
     android:layout_marginTop="60dp">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/city_in_store_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="520dp"
+
+    <TextView
+        android:id="@+id/historyTitle"
+        android:background="@drawable/shape_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:textAlignment="center"
+        android:text="История просмотра"
+        android:textSize="28sp"
+        android:textColor="@color/textColorSearchView"
+        android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/city_in_store_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/historyTitle"
         tools:itemCount="5"
         tools:listitem="@layout/item_city_in_store" />
     <View

@@ -5,27 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/star4"
-         android:layout_height="match_parent"
-         android:layout_width="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/p"
-        />
+        android:src="@drawable/p" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
-           <androidx.appcompat.widget.SearchView
+
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/search_city_view"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="44dp"
+            app:queryHint="Введите город"
             android:background="@drawable/shape_7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:theme="@style/AppSearchView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/towns_recycler"
@@ -46,5 +50,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/towns_recycler" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-<!--    android:background="#AB07640B"-->
+    <!--    android:background="#AB07640B"-->
 </FrameLayout>

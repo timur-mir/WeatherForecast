@@ -59,7 +59,8 @@ class SearchFragment : Fragment() {
         (binding.searchCityView as SearchView).setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(cityName: String): Boolean {
-                if (cityName.length>1) {
+                if (cityName.length>1)
+                {
                     searchTown(cityName)
                 }
                         else
@@ -84,6 +85,7 @@ class SearchFragment : Fragment() {
         MainActivity.Panel.readBackupFlag=false
         viewLifecycleOwner.lifecycleScope.launch {
             searchViewModel.getCityWeatherParam(cityName) { state ->
+
                 if (state != null) {
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                         MainActivity.Panel.normalFoundPlaceState = true
